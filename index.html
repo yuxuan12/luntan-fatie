@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="css/index.css">
+    <script src="js/angular.js"></script> <!--引入angularJS-->
+    <script src="js/index.js"></script> <!--引入主控制器-->
+    <script src="js/filter/filter.js"></script> <!--引入过滤器-->
+</head>
+<body ng-app="myapp" ng-controller="myCtrl">
+    <div id="header">
+        <div class="header-top">
+            <div class="top">
+                <div class="inner">
+                    <img src="images/3_02.gif">
+                </div>
+            </div>
+        </div>
+
+        <div class="bottom inner"><img src="images/3_05.gif"> </div>
+    </div>
+    <div id="main">
+        <!--左侧-->
+        <div class="left">
+            <!--标题-->
+            <h1 class="title">
+                话题：<span>司法部政治部主任卢恩光涉嫌严重违纪接受调查</span><span>[查看原文]</span>
+            </h1>
+            <!--快速发帖块-->
+            <div class="titleBar">
+                <div class="titleBar-top clearfix">
+                    <button ng-click="toggle()">快速发帖</button>
+                    <button>去跟帖广场看看 <span>></span></button>
+                    <div class="number">
+                        <ul>
+                            <li ng-click="page(pageNum-1);hide(pageNum)" ng-class="pageNum==1?'undone':''">上一页</li>
+                            <li ng-repeat="item in data | pagenumFilter:pageSize "
+                                ng-click="page(item)"
+                                ng-class="item==pageNum?'clickColor':''">{{item}}</li>
+                            <li ng-click="page(pageNum+1);hide(pageNum)" ng-class="pageNum==totleNum?'undone':''">下一页</li><!--根据pageSize，自动算出有几页  -->
+                        </ul>
+                    </div>
+                </div>
+                <div class="titleBar-btm" ng-show="flag" > <!--flag为true的时候出现  -->
+                    <span class="sanjiao"></span>
+                    <form>
+                        <span class="kong1" ng-show="count">内容不能为空哦！</span>
+                        <textarea id="textare" ng-model="userText" placeholder="抵制低俗，文明上网，登陆发帖"></textarea><!--绑定输入内容-->
+                    </form>
+                    <div id="login">
+                        <form>
+                            <span class="kong2" ng-show="yonhum">请输入用户名！</span>
+                            <input type="text" placeholder="用户名" ng-model="userName"><!--绑定用户名-->
+                            <input type="text" placeholder="密码">
+                            <input type="checkbox" checked="checked">自动登陆
+                            <button ng-click="add()">登陆并发表</button>  <!--点击添加数组内容-->
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <!--热门跟帖-->
+            <div class="hot clearfix">
+                <!--小标题-->
+                <div class="sml_title">
+                    <div class="title_l">
+                        <strong>热门跟帖</strong>
+                        (跟贴 <em>{{data.length}}</em>条 有 <em>0</em>人参与)
+                    </div>
+                    <div class="title_r">
+                        <a href="#">跟贴用户自律公约</a> | <a href="#">手机也能看跟贴>></a>
+                    </div>
+                </div>
+                <!--网友评论-->
+                <div>
+                    <div class="comment clearfix" ng-repeat="item in data |pageFilter:pageNum:pageSize">
+                        <div class="comment_l clearfix" ng-mouseenter="show[$index]= true" ng-mouseleave="show[$index] = false">
+                            <a href="#"><img ng-src="{{item.userInfo.userImg}}"></a>
+                            <button ng-mouseenter="show[$index] = true" ng-mouseleave="show[$index] = false" ng-show="show[$index]"></button>
+                        </div>
+                        <div class="comment_m clearfix">
+                            <a class="nickname" href="#">{{item.userInfo.nickName}}</a>
+                            <span class="area">[网易上海手机网友]</span>
+                            <p class="time">{{item.time}}</p>
+                            <p class="userComt">{{item.userInfo.userComt}}</p>
+                            <ul class="operations">
+                                <li><a ng-click="ding(item.userInfo.nickName)" ng-class="item.gray?'gray':''">顶<span>[{{item.zan}}]</span></a></li>
+                                <li><a href="javascript:;">回复</a></li>
+                                <li><a href="javascript:;">收藏</a></li>
+                                <li><a href="javascript:;">分享</a></li>
+                                <li><a href="javascript:;">复制</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!--页码-->
+                <div class="titleBar" id="footNum">
+                    <div class="titleBar-top clearfix" >
+                        <div class="number">
+                            <ul>
+                                <li ng-click="page(pageNum-1);hide(pageNum)" ng-class="pageNum==1?'undone':''">上一页</li>
+                                <li ng-repeat="item in data | pagenumFilter:pageSize "
+                                    ng-click="page(item)"
+                                    ng-class="item==pageNum?'clickColor':''">{{item}}</li>
+                                <li ng-click="page(pageNum+1);hide(pageNum)" ng-class="pageNum==totleNum?'undone':''">下一页</li><!--根据pageSize，自动算出有几页  -->
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <!--右侧-->
+        <div class="right"><img src="images/side.gif"> </div>
+    </div>
+</body>
+</html>
